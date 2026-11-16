@@ -8,22 +8,22 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <!-- Using Spring Boot 3.3.x for Java 17 + Jakarta EE compatibility -->
-        <version>3.3.4</version>
+        <!-- Upgraded to Spring Boot 3.5.0 for Java 25 support (ASM 9.7+ required for class file version 69) -->
+        <version>3.5.0</version>
     </parent>
 
     <groupId>com.demo</groupId>
     <artifactId>resortsLite</artifactId>
     <version>1.0.0</version>
     <name>ResortsLite</name>
-    <description>Legacy resort booking demo — migrated to Java 17 / Spring Boot 3.3.x</description>
+    <description>Legacy resort booking demo — migrated to Java 25 / Spring Boot 3.5.x</description>
 
     <properties>
-        <!-- Target Java 17 (matches available JDK) -->
-        <java.version>17</java.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <maven.compiler.release>17</maven.compiler.release>
+        <!-- Target Java 25 (matches available JDK 25.0.4-tem) -->
+        <java.version>25</java.version>
+        <maven.compiler.source>25</maven.compiler.source>
+        <maven.compiler.target>25</maven.compiler.target>
+        <maven.compiler.release>25</maven.compiler.release>
     </properties>
 
     <dependencies>
@@ -48,7 +48,7 @@
 
         <!--
             SECURITY FIX: Removed log4j-core 2.14.1 (CVE-2021-44228 Log4Shell).
-            Spring Boot 3.3.x uses Logback by default; log4j-core is not needed.
+            Spring Boot 3.5.x uses Logback by default; log4j-core is not needed.
         -->
 
         <!--
@@ -64,13 +64,13 @@
 
     <build>
         <plugins>
-            <!-- Maven Compiler Plugin — explicitly configured for Java 17 -->
+            <!-- Maven Compiler Plugin — explicitly configured for Java 25 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
                 <configuration>
-                    <release>17</release>
+                    <release>25</release>
                 </configuration>
             </plugin>
 
@@ -81,7 +81,7 @@
                 <version>3.2.5</version>
             </plugin>
 
-            <!-- Spring Boot Maven Plugin -->
+            <!-- Spring Boot Maven Plugin — 3.5.0 supports Java 25 class files (ASM 9.7+) -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
