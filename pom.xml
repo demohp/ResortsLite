@@ -60,6 +60,20 @@
             <artifactId>commons-collections4</artifactId>
             <version>4.4</version>
         </dependency>
+
+        <!-- Spring Boot Test — brings JUnit 5 (Jupiter), Mockito, AssertJ (versions managed by Spring Boot BOM) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- JUnit 5 Jupiter Params — version managed by Spring Boot BOM -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
