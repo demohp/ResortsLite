@@ -3,7 +3,9 @@ package com.demo.resortslite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
+// FIXED: Migrated from javax.servlet (Tomcat 9 / Jakarta EE 8) to
+//        jakarta.servlet (Tomcat 10+ / Jakarta EE 9+) required by Spring Boot 3.x
+import jakarta.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 

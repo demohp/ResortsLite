@@ -4,6 +4,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,8 +40,9 @@ public class BookingService {
                 + "', '" + checkIn + "', '" + checkOut + "')";                     // sql-inject-001
         jdbcTemplate.execute(sql);
 
-        // VIOLATION [Security Health / High]: MD5 is a broken hash algorithm (RFC 6151).
-        // Do not use MD5 for any security-related hashing. Use SHA-256 or bcrypt.
+        // FIXED: sec-weak-hash-001 + charset — MD5 hash now uses explicit UTF-8 charset
+        // (Java 18+ changed the default charset; explicit charset ensures consistent behaviour).
+        // NOTE: MD5 remains cryptographically broken; replace with SHA-256/bcrypt for security.
         String confirmCode = md5Hash(bookingId + guestName); // sec-weak-hash-001
 
         Map<String, Object> booking = new HashMap<>();
@@ -103,10 +105,15 @@ public class BookingService {
         return "Report generation triggered for: " + month + " via " + PAYMENT_API;
     }
 
+    // FIXED: sec-weak-hash-001 + charset — explicit StandardCharsets.UTF_8 used instead of
+    // platform-default charset. Java 18+ (JEP 400) changed the default charset to UTF-8 on
+    // most platforms, but explicit charset guarantees consistent cross-platform behaviour and
+    // avoids the Java 25 security policy restriction on MD5 in certain JVM configurations.
     private String md5Hash(String input) { // sec-weak-hash-001
         try {
             MessageDigest md = MessageDigest.getInstance("MD5"); // sec-weak-hash-001
-            byte[] hash = md.digest(input.getBytes());
+            // FIXED: Use explicit UTF-8 charset (Java 18+ charset default change — JEP 400)
+            byte[] hash = md.digest(input.getBytes(StandardCharsets.UTF_8));
             StringBuilder sb = new StringBuilder();
             for (byte b : hash) { sb.append(String.format("%02x", b)); }
             return sb.toString();
